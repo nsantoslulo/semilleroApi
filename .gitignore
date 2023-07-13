@@ -4,10 +4,14 @@
 /build/classes/java/main/
 /build/classes/java/test/
 /site/serenity/
+target/site/serenity
+/index.hmtl
 
 .classpath
 .settings/
 target/
+# Ignore Gradle GUI config
+gradle-app.setting
 
 
 # .idea folder
@@ -26,6 +30,7 @@ target/
 *.zip
 *.tar.gz
 *.rar
+*.html
 
 ### Java ###
 # Compiled class file
@@ -47,3 +52,7 @@ target/
 
 # SonarLint plugin
 .idea/sonarlint/
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
