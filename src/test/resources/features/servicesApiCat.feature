@@ -23,6 +23,10 @@ Scenario: Make request to method Get for consult an size of cats
 @PostAddNewFavAndDelete
 Scenario: Make request to method POST for add new fav
   Given I make to connection to api
-  When Execute the method "POST" with the resource api "favourites"
+  And Execute the method "POST" with the resource api "favourites"
+  When See that the is returned 200
+  Then Execute the method DELETE with the resource api "favourites"
   And See that the is returned 200
-  Then Execute the method DELETE with the resource api "favourites/"
+
+
+

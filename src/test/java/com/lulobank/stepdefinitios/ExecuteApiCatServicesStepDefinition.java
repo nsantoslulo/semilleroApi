@@ -9,11 +9,13 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import net.serenitybdd.rest.SerenityRest;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 import net.serenitybdd.screenplay.rest.questions.ResponseConsequence;
 import static com.lulobank.exceptions.ErrorAssertion.THE_CODE_DO_NOT_MATCH;
+import static com.lulobank.factory.InformationOfCats.ID;
 import static com.lulobank.factory.InformationOfCats.IDS_FAV;
 import static com.lulobank.tasks.DeleteApiCat.executePostMethodWithThe;
 import static com.lulobank.tasks.PostService.addNewFavorite;
@@ -23,6 +25,7 @@ import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.GivenWhenThen.givenThat;
 import static com.lulobank.tasks.GetServiceSearch.executeGetMethodWithThe;
+import static net.serenitybdd.screenplay.rest.questions.ResponseConsequence.seeThatResponse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static com.lulobank.questions.Response.getStatusCode;
@@ -65,23 +68,20 @@ public class ExecuteApiCatServicesStepDefinition {
     assertThat(THE_CODE_DO_NOT_MATCH,
         theActorInTheSpotlight().asksFor(getStatusCode()),equalTo(statusCode)
         );
-    then(theActorInTheSpotlight()).should(ResponseConsequence.seeThatResponse(
+    then(theActorInTheSpotlight()).should(seeThatResponse(
         THE_CODE_DO_NOT_MATCH,response -> response.statusCode(statusCode)
+
     ));
-    theActorInTheSpotlight().remember(IDS_FAV.toString(),IDS_FAV);
+    theActorInTheSpotlight().remember(ID.toString(),SerenityRest.lastResponse().jsonPath().getString("id"));
   }
   @When("Execute the method DELETE with the resource api {string}")
   public void execute_the_method_delete_with_the_resource_api(String resourceApi) {
-    when(theActorInTheSpotlight()).wasAbleTo(executePostMethodWithThe(resourceApi));
-    theActorInTheSpotlight().recall(IDS_FAV);
+    when(theActorInTheSpotlight()).wasAbleTo(executePostMethodWithThe(resourceApi,theActorInTheSpotlight().recall(ID)
+));
 
   }
   @Then("Check if the favourite was delete successfully")
   public void check_if_the_favourite_was_delete_successfully() {
-    //assertThat("The id does not exist",
-     // theActorInTheSpotlight().asksFor(getStatus()), equalTo(getStatus)
-    //);
-
   }
 
   }

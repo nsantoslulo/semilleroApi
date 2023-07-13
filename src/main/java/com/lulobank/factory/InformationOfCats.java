@@ -15,7 +15,7 @@ public class InformationOfCats {
   static List<String> LIST_SIZE = Arrays.asList("full", "small", "med","thumb");
   public static final String SIZE = LIST_SIZE.get(FAKER.random().nextInt(1,4));
   public static final String IDS_FAV = String.valueOf(FAKER.idNumber().valid());
-
+  public static final String ID="IdFavorite";
 
 
 }

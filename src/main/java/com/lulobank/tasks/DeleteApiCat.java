@@ -9,8 +9,11 @@ import static net.serenitybdd.rest.SerenityRest.given;
 
 public class DeleteApiCat implements Task {
   private final String resourceApi;
-  public DeleteApiCat(String resourceApi) {
+  private final String id;
+  public DeleteApiCat(String resourceApi,String id) {
+
     this.resourceApi = resourceApi;
+    this.id = id;
   }
 
   @Override
@@ -19,13 +22,13 @@ public class DeleteApiCat implements Task {
         .header("x-api-key","live_vSzJQEXdqNlQCodAd84R3KWmnJJ0z3ZdTRXhJCDS2CUruTCv9o1DF157BxvjWIWu")
         .and()
         .when()
-        .delete(resourceApi+"/"+IDS_FAV )
+        .delete(resourceApi+"/"+id )
         .then()
         .extract()
         .response();
   }
-  public static DeleteApiCat executePostMethodWithThe(String resourceApi){
-    return Tasks.instrumented(DeleteApiCat.class, resourceApi);
+  public static DeleteApiCat executePostMethodWithThe(String resourceApi,String id){
+    return Tasks.instrumented(DeleteApiCat.class, resourceApi,id);
   }
 }
 
