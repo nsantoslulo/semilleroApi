@@ -1,7 +1,6 @@
 package com.lulobank.stepdefinitios;
 
 import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,7 +14,8 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 import net.serenitybdd.screenplay.rest.questions.ResponseConsequence;
 import static com.lulobank.exceptions.ErrorAssertion.THE_CODE_DO_NOT_MATCH;
-import static com.lulobank.questions.Response.getStatus;
+import static com.lulobank.factory.InformationOfCats.IDS_FAV;
+import static com.lulobank.tasks.DeleteApiCat.executePostMethodWithThe;
 import static com.lulobank.tasks.PostService.addNewFavorite;
 import static net.serenitybdd.screenplay.GivenWhenThen.then;
 import static net.serenitybdd.screenplay.GivenWhenThen.when;
@@ -28,7 +28,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static com.lulobank.questions.Response.getStatusCode;
 
 
-public class ExecuteGetSearchServicesStepDefinition {
+public class ExecuteApiCatServicesStepDefinition {
   @Before
   public static void actor(){
     OnStage.setTheStage(new Cast());
@@ -37,7 +37,7 @@ public class ExecuteGetSearchServicesStepDefinition {
   @Before
   public static void setUpRest() {
     RestAssured.baseURI = "https://api.thecatapi.com";
-    RestAssured.basePath = "v1/";
+    RestAssured.basePath = "/v1/";
     RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
     RestAssured.requestSpecification = new RequestSpecBuilder()
         .setContentType(ContentType.JSON)
@@ -55,9 +55,9 @@ public class ExecuteGetSearchServicesStepDefinition {
   public void executeTheMethodGETWithTheResourceApi(String resourceApi) {
     when(theActorInTheSpotlight()).wasAbleTo(executeGetMethodWithThe(resourceApi));
   }
-  @When("Execute the method POST with the resource api {string}")
-  public void execute_the_method_post_with_the_resource_api(String resourceApi) {
-    when(theActorInTheSpotlight()).wasAbleTo(addNewFavorite(resourceApi));
+  @When("Execute the method {string} with the resource api {string}")
+  public void execute_the_method_post_with_the_resource_api(String method,String resourceApi) {
+    when(theActorInTheSpotlight()).wasAbleTo(addNewFavorite(method,resourceApi));
   }
 
   @Then("See that the is returned {int}")
@@ -68,5 +68,20 @@ public class ExecuteGetSearchServicesStepDefinition {
     then(theActorInTheSpotlight()).should(ResponseConsequence.seeThatResponse(
         THE_CODE_DO_NOT_MATCH,response -> response.statusCode(statusCode)
     ));
+    theActorInTheSpotlight().remember(IDS_FAV.toString(),IDS_FAV);
   }
+  @When("Execute the method DELETE with the resource api {string}")
+  public void execute_the_method_delete_with_the_resource_api(String resourceApi) {
+    when(theActorInTheSpotlight()).wasAbleTo(executePostMethodWithThe(resourceApi));
+    theActorInTheSpotlight().recall(IDS_FAV);
+
+  }
+  @Then("Check if the favourite was delete successfully")
+  public void check_if_the_favourite_was_delete_successfully() {
+    //assertThat("The id does not exist",
+     // theActorInTheSpotlight().asksFor(getStatus()), equalTo(getStatus)
+    //);
+
+  }
+
   }
