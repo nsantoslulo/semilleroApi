@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
     features = "src/test/resources/features",
     plugin = {"pretty","html:target/cucumber"},
     glue = "com.lulobank.stepdefinitios",
-    tags = "@jejeje",
+    tags = "@services",
     snippets = SnippetType.CAMELCASE,
     monochrome = true
 
