@@ -1,15 +1,13 @@
 package com.lulobank.tasks;
 
-import io.restassured.RestAssured;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
 import net.thucydides.core.annotations.Step;
 
-import static com.lulobank.factory.GetOptionsOfCats.BREED_IDS;
-import static com.lulobank.factory.GetOptionsOfCats.SIZE;
-import static com.lulobank.factory.GetOptionsOfCats.limit;
-import static net.serenitybdd.rest.SerenityRest.get;
+import static com.lulobank.factory.InformationOfCats.BREED_IDS;
+import static com.lulobank.factory.InformationOfCats.SIZE;
+import static com.lulobank.factory.InformationOfCats.limit;
 import static net.serenitybdd.rest.SerenityRest.given;
 
 
@@ -25,26 +23,17 @@ public class GetServiceSearch implements Task {
   public <T extends Actor> void performAs(T actor) {
 
     switch (resourceApi) {
-      case "?limit=":
+      case "images/search?limit=":
         given()
             .and().when().get(resourceApi + limit)
             .then().extract().response();
         break;
-      case "?breed_ids=":
+      case "images/search?breed_ids=":
         given()
             .and().when().get(resourceApi + BREED_IDS)
             .then().extract().response();
         break;
-      case "breeds":
-        given()
-            .and()
-            .when()
-            .get(resourceApi + RestAssured.get()+"breeds")
-            .then()
-            .extract()
-            .response();
-        break;
-      case "?size=":
+      case "images/search?size=":
         given()
             .and().when().get(resourceApi +SIZE)
             .then().extract().response();
